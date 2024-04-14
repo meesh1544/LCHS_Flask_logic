@@ -1,1 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{tab_title}}</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+    <link rel="stylesheet"  type="text/css" href="./css/style.css">
+</head>
+<body>
+    <header class="head-background">
+        <h1>{{page_title}}</h1>
+    </header>
+    {% block content %}
+    {% endblock %}
 
+<section class="centered">
+    <section class="grid_image">
+        <img class="responsive" src="{{url_for('static', filename=image)}}" /><br>
+        
+        <p>Path followed: {{steps}}</p>
+    </section>
+    <section class="choice_form">
+        <h2>Game Directions</h2>
+        {% if steps.split('-')|length > 5 %}
+           <p>You've taken five steps. Time to start over!</p>
+           <form action="/" method="GET">
+              <button class="restart">Restart!</button>
+           </form>
+        {% else %}
+           <p>Choose a direction to move:</p>
+           <form action="/" method="POST">
+               {% for direction, value in choices.items() %}
+               <label><input type="radio" name="choice" value="{{value}}" required>{{direction}}</label><br>
+               {% endfor %}
+               <input type="hidden" name="steps" value="{{steps}}" />
+               <button>Go!</button>
+           </form>
+        {% endif %}
+     </section>
+</section>
+</body>
+</html>
